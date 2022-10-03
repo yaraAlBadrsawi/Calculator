@@ -5,22 +5,24 @@ class MyButton extends StatelessWidget {
   final Color? textColor;
   final Gradient buttonColor;
   final String? text;
+  final buttonTapped;
 
-  MyButton(this.textColor, this.buttonColor, this.text);
+  MyButton(this.textColor, this.buttonColor, this.text,this.buttonTapped);
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(35)),
+      borderRadius: const BorderRadius.all(Radius.circular(40)),
       child: Container(
 
-        decoration: BoxDecoration(gradient: buttonColor),
+        decoration: BoxDecoration(
+            gradient: buttonColor),
         child: MaterialButton(
-          onPressed: () {},
-          splashColor: Colors.white.withOpacity(0.3),
+          onPressed: buttonTapped,
+          splashColor: Colors.white.withOpacity(0.5),
           child: Text(
             text!,
-            style: TextStyle(fontSize: 17, color: textColor!),
+            style: TextStyle(fontSize: 18, color: textColor!),
           ),
         ),
       ),
