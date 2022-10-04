@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_calculater/StatefulWidget/GridWidget.dart';
+import 'package:my_calculater/StatefulWidget/SwitchWidget.dart';
 import 'package:my_calculater/globals/globals.dart' as globals;
 
 import '../globals/staticVar.dart';
@@ -19,19 +20,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: globals.nightMode ? _lightThem : _darkThem,
+      theme: globals.nightMode ?  _darkThem:_lightThem,
       home: Button(),
     );
   }
 }
 
 ThemeData _lightThem = ThemeData(
-  primarySwatch: Colors.blue,
   brightness: Brightness.light,
 );
 
 ThemeData _darkThem = ThemeData(
-  primarySwatch: Colors.red,
   brightness: Brightness.dark,
 );
 
@@ -50,7 +49,6 @@ class _ButtonState extends State<Button> {
 }
 
 Widget _getMainContainer() {
-
   return Scaffold(
     body: Column(
       children: [
@@ -60,29 +58,40 @@ Widget _getMainContainer() {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               Container(
-                  padding: EdgeInsets.all(10),
+                color: Color(0xff4d4d4d).withOpacity(0.5),
+                padding:const EdgeInsets.only(top:10,right: 15,left: 15),
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    StaticVar.userQuestion ,
-                    style: TextStyle(fontSize: 20,color: Colors.white),
-                  )),
+                    globals.userQuestion,
+                    style: const TextStyle(fontSize: 30,color: Colors.white),
+                  ),
+              ),
               Container(
-                  padding: EdgeInsets.all(22),
-                  alignment: Alignment.centerRight,
-                  // child: Text(
-                  //   StaticVar.userAnswer ,
-                  //   style: TextStyle(fontSize: 20,color: Colors.white),
-                  // ),
+                color: Color(0xff4d4d4d).withOpacity(0.5),
+                height:60,
+                padding: const EdgeInsets.only(right: 15,left: 15),
+                alignment: Alignment.centerRight,
+                child: Text(
+                 globals.userAnswer,
+                  style:const TextStyle(fontSize: 30,color: Colors.white),
+                ),
               ),
             ],
           ),
-        )),
+        ),
+        ),
+        Container(
+          alignment: Alignment.topRight,
+            padding: const EdgeInsets.only(right: 16),
+            child: const SwitchWidget()),
         Expanded(
-            flex: 3,
+            flex: 2,
             child: Container(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.symmetric(horizontal: 10),
               child: _getGrid(),
             )),
       ],

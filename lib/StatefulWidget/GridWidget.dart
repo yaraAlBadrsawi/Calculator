@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
-import 'package:my_calculater/globals/staticVar.dart';
-import '../globals/globals.dart' as globals;
+import 'package:my_calculater/globals/globals.dart' as globals;
 import 'MyButton.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class GridWidget extends StatefulWidget {
   const GridWidget({Key? key}) : super(key: key);
@@ -53,9 +54,8 @@ class _GridWidgetState extends State<GridWidget> {
             currentButton,
             () {
               setState(() {
-                StaticVar.userQuestion += buttons[index];
-                print(StaticVar.userQuestion);
-
+                globals.userQuestion='';
+                globals.userAnswer ='';
               });
             },
           );
@@ -71,31 +71,60 @@ class _GridWidgetState extends State<GridWidget> {
             ),
             currentButton,
             () {
-              setState(() {
-                StaticVar.userQuestion += buttons[index];                print(StaticVar.userQuestion);
-                print(StaticVar.userQuestion);
+              setState(() =>
+                globals.userQuestion=globals.userQuestion
+                    .substring(0,globals.userQuestion.length-1));
 
-              });
             },
           );
-        } else {
+        }
+
+        else {
           return MyButton(
             _isOperator(currentButton) ? Colors.white : Colors.black,
             _getButtonColor(currentButton),
             currentButton,
             () {
               setState(() {
-                StaticVar.userQuestion = StaticVar.userQuestion+buttons[index];
-                print(StaticVar.userQuestion);
+                equal(index,buttons);
+                if(_isStartWithOperator()){
+                  // globals.userQuestion =
+                  //     'can\'t start with operator';
+                  print(globals.userQuestion);
+                }else{
+                  globals.userQuestion =globals.userQuestion
+                  +
+                  buttons[index];
+
+                }
+
+
               });
             },
           );
         }
       },
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4, crossAxisSpacing: 9.0, mainAxisSpacing: 8.0),
+          crossAxisCount: 4, crossAxisSpacing: 2, mainAxisSpacing: 1.0),
     );
   }
+}
+
+bool _isStartWithOperator(){
+  String currentOperator= globals.userQuestion.toString();
+  if(
+  currentOperator.startsWith('=')||
+  currentOperator.startsWith('×')||
+  currentOperator.startsWith('÷')||
+  currentOperator.startsWith('+')||
+  currentOperator.startsWith('-')||
+  currentOperator.startsWith('%')||
+  currentOperator.startsWith('ANS')||
+  currentOperator.startsWith('.')
+  ){
+    return true;
+  }
+  return false;
 }
 
 bool _isOperator(String symbol) {
@@ -127,5 +156,21 @@ Gradient _getButtonColor(String currentButton) {
         Color(0xfff298a8),
       ],
     );
+  }
+}
+
+equal(int index,List buttons){
+  print('index : $index');
+  print('length ${buttons.length - 1}');
+  globals.userQuestion.replaceAll('×', '*');
+  if(index==buttons.length-1){
+
+    Parser p = Parser();
+    Expression exp = p.parse(globals.userQuestion);
+
+    // Bind variables:
+    ContextModel cm = ContextModel();
+    double eval = exp.evaluate(EvaluationType.REAL, cm);
+    globals.userAnswer=eval.toString();
   }
 }

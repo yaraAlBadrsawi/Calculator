@@ -12,9 +12,8 @@ class MyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(40)),
+      borderRadius: const BorderRadius.all(Radius.circular(50)),
       child: Container(
-
         decoration: BoxDecoration(
             gradient: buttonColor),
         child: MaterialButton(
